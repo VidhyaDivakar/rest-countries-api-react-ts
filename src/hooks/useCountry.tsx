@@ -9,7 +9,7 @@ function useCountry(){
                 const countryPromiseObj = fetchAllCountries();
                 countryPromiseObj.then((data)=>{
                     console.log(data);
-                    setCountryList(countryList);
+                    setCountryList(data);
                 });
         
             },[]);
