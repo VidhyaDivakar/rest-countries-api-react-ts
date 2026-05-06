@@ -1,12 +1,14 @@
-import './App.css'
-
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Welcome from "./pages/Welcome";
 function App() {
- 
   return (
-    <>
-     <h1> Rest Countries API</h1>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Welcome />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
