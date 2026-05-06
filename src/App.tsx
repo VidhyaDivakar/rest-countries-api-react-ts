@@ -1,12 +1,10 @@
-
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Welcome from "./pages/Welcome";
-
-import './App.css'
 import Dashboard from "./pages/Dashboard";
 function App() {
   return (
+
 
 <BrowserRouter>
       <Routes>
@@ -15,6 +13,7 @@ function App() {
       </Routes>
     </BrowserRouter>
   );
+
 
 }
 
