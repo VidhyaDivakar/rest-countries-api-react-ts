@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchAllCountries } from "../services/restCountriesApiService";
-import type { Country } from "../types/countryTypes";
+import type { Country, CountryDetailsApiData } from "../types/countryTypes";
+import countryMapper from "../components/mapper/countryMapper";
 
 function useCountry(){
 
@@ -8,8 +9,12 @@ function useCountry(){
         useEffect(()=>{
                 const countryPromiseObj = fetchAllCountries();
                 countryPromiseObj.then((data)=>{
-                    console.log(data);
-                    setCountryList(data);
+                    
+                    const coutries:CountryDetailsApiData[] = data;
+                    //convert list of CountryDetailsApiData to Country list
+                    const countryList:Country[] = coutries.map(countryMapper);
+
+                    setCountryList(countryList);
                 });
         
             },[]);
