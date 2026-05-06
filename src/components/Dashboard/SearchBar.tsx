@@ -7,9 +7,9 @@ function SearchBar({handleSearch}){
     }
 
 
-    return<>
-        <input type="text" placeholder="Search for a Country" onKeyUp={handleChange}/>
-    </>
+    return<div className="self-center">
+        <input type="text" className="rounded-md border-black p-2 border" placeholder="Search for a Country" onKeyUp={handleChange}/>
+    </div>
 }
 
 export default SearchBar;
