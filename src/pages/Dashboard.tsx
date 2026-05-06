@@ -9,15 +9,21 @@ function Dashboard (){
     const {countryList} = useCountry();
   
     const [search, setSearch] = useState("");
+    const [filter, setFilter] = useState("All");
 
     const searchCountry= (searchValue:string)=>{
        setSearch(searchValue);   
     }
 
-    const filteredList = countryList.filter((country) => country.name.toLowerCase().includes(search.toLowerCase()))
+    const filterCountry = (filterValue:string)=>{
+        setFilter(filterValue);
+    }
+
+    const filteredList = countryList.filter((country) => (country.name.toLowerCase().includes(search.toLowerCase())&& 
+    (filter==="All" || country.region.toLowerCase().includes(filter.toLowerCase()))))
     return <>
     <SearchBar handleSearch={searchCountry}/>
-    <RegionFilter/>
+    <RegionFilter handleSearchFilter={filterCountry}/>
     <CountryList filteredList={filteredList}/>
     </>
 }
