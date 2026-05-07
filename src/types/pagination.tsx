@@ -15,3 +15,9 @@ export interface PaginationInputPros{
      itemsPerPage: number, 
      initialPage: number
 }
+
+
+export interface PaginationControlInput{
+    pagination:Pagination;
+    totalItems:number
+}
