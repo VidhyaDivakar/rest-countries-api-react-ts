@@ -125,29 +125,91 @@ export function CountryDetailsPage() {
                             <h3 className="mb-4 text-xl font-semibold">Border Countries</h3>
                             <BorderCountries borderCountries={borderCountries} />
                         </div>
-                        {/* WEATHER (YOUR FEATURE ADDED) */}
-                        <div className="mt-6 rounded-xl bg-white p-6 shadow-sm">
-                            <h3 className="mb-4 text-xl font-semibold">
-                                Weather in {country.capital?.[0]}
-                            </h3>
+                        {/* WEATHER API UI */}
+                        <div className="mt-6 overflow-hidden rounded-3xl bg-gradient-to-br from-sky-500 via-blue-500 to-blue-700 p-6 text-white shadow-xl">
+                            <div className="flex items-start justify-between gap-4">
 
-                            {weatherLoading && <p>Loading weather...</p>}
+                                {/* LEFT SECTION */}
+                                <div>
+                                    <h3 className="text-2xl font-bold">
+                                        {country.capital?.[0]}
+                                    </h3>
 
-                            {!weatherLoading && weather && (
-                                <div className="space-y-1">
-                                    <p>🌡 Temperature: {weather.main.temp}°C</p>
-                                    <p>
-                                        🌥 Condition: {weather.weather[0].description}
-                                    </p>
-                                    <p>💨 Wind: {weather.wind.speed} m/s</p>
-                                    <p>💧 Humidity: {weather.main.humidity}%</p>
+                                    {!weatherLoading && weather && (
+                                        <>
+                                            <p className="mt-1 text-lg capitalize text-blue-100">
+                                                {weather.weather[0].description}
+                                            </p>
+
+                                            <div className="mt-6 space-y-3 text-sm">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-lg">💧</span>
+                                                    <span>
+                                                        Humidity: {weather.main.humidity}%
+                                                    </span>
+                                                </div>
+
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-lg">💨</span>
+                                                    <span>
+                                                        Wind: {weather.wind.speed} m/s
+                                                    </span>
+                                                </div>
+
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-lg">🌡</span>
+                                                    <span>
+                                                        Feels like {weather.main.temp}°C
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+
+                                    {weatherLoading && (
+                                        <p className="mt-4 text-blue-100">
+                                            Loading weather...
+                                        </p>
+                                    )}
+
+                                    {!weatherLoading && !weather && (
+                                        <p className="mt-4 text-blue-100">
+                                            No weather data available
+                                        </p>
+                                    )}
                                 </div>
-                            )}
 
-                            {!weatherLoading && !weather && (
-                                <p>No weather data available</p>
-                            )}
+                                {/* RIGHT SECTION */}
+                                {!weatherLoading && weather && (
+                                    <div className="flex flex-col items-center">
+                                        <img
+                                            src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@4x.png`}
+                                            alt={weather.weather[0].description}
+                                            className="h-32 w-32 drop-shadow-lg"
+                                        />
+
+                                        <p className="-mt-4 text-5xl font-bold">
+                                            {Math.round(weather.main.temp)}°C
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
+                        {/* Flight Card Dummy*/}
+                        {/* FLIGHT DETAILS CARD */}
+                        <div className="mt-6 rounded-xl bg-white p-6 shadow-sm border border-gray-200">
+                            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                                Flight Details
+                            </h2>
+
+                            <div className="space-y-3">
+                                <div className="h-4 w-40 rounded bg-gray-200"></div>
+                                <div className="h-4 w-64 rounded bg-gray-200"></div>
+                                <div className="h-4 w-52 rounded bg-gray-200"></div>
+                                <div className="h-20 rounded bg-gray-100"></div>
+                            </div>
+                        </div>
+
 
                     </div>
                 </div>
