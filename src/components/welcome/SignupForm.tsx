@@ -1,11 +1,17 @@
 import { useState } from "react";
+import { useUser } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Signupform() {
   const [username, setUsername] = useState("");
   const [region, setRegion] = useState("");
+  const { signup } = useUser();
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    signup(username, region);
+    navigate("/dashboard");
     console.log(`Username is ${username}, and favorite region is ${region}`);
   };
 
