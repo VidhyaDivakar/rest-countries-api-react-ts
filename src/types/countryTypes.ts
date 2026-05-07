@@ -65,3 +65,15 @@ export interface CountryDetails {
     languages: string;
     borders: string[];
 }
+
+export type BorderCountry = {
+    cca3: string;
+    name: {
+        common: string
+    };
+};
+
+//border countries prop
+export type BorderCountriesProps = {
+    borderCountries : BorderCountry[];
+}

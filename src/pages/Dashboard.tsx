@@ -21,11 +21,16 @@ function Dashboard (){
 
     const filteredList = countryList.filter((country) => (country.name.toLowerCase().includes(search.toLowerCase())&& 
     (filter==="All" || country.region.toLowerCase().includes(filter.toLowerCase()))))
-    return <>
+
+
+    return <div className="m-5">
+        <div className="flex  justify-between">
     <SearchBar handleSearch={searchCountry}/>
+    
     <RegionFilter handleSearchFilter={filterCountry}/>
+    </div>
     <CountryList filteredList={filteredList}/>
-    </>
+    </div>
 }
 
 export default Dashboard;
