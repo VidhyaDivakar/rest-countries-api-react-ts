@@ -10,7 +10,7 @@ function CountryList({filteredList}){
     
     const pagination:Pagination = usePagination({ 
         totalItems: filteredList.length, 
-        itemsPerPage: 10, 
+        itemsPerPage: 8, 
         initialPage:1 
     });
 
