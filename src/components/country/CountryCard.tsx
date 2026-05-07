@@ -1,26 +1,35 @@
 import type { Country } from "../../types/countryTypes";
 import { Link } from 'react-router-dom'
 
+function formatPopulation(n: number): string {
+    if (n >= 1000000) return (n / 1000000).toFixed(1) + "M";
+    if (n >= 1000) return (n / 1000).toFixed(1) + "K";
+    return String(n);
+}
+
 function CountryCard(country: Country) {
 
-    console.log(country)
-    return (<section className="w-65 md:72 lg:80 rounded-xl border overflow-hidden" >
+    return (<section className="w-55 md:72 lg:80 rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow" >
+
         <Link to={`/country/${country.name}`}>
-            <img className="w-full h-40" src={country.flag} />
+            <div className="w-full aspect-[3/2] overflow-hidden bg-gray-50">
+                <img className="w-full h-full object-cover" src={country.flag} />
+            </div>
         </Link>
+    
         <div className="m-4">
             <div className="flex justify-between">
-                <h2 className="font-bold">{country.name}</h2>
-                <p className="border bg-teal-400 rounded-md p-1">{country.region}</p>
+                <h2 className="font-semibold text-gray-800">{country.name}</h2>
+                <p className="border border-gray-200 bg-gray-100 text-gray-600 rounded-md px-2 py-1 text-sm">{country.region}</p>
             </div>
-            <div className="flex justify-between mt-2">
-                <div className="fex flex-col">
-                    <label className="font-light">Population</label>
-                    <p>{country.population}</p>
+            <div className="flex justify-between pt-4">
+                <div className="flex flex-col">
+                    <label className="font-light text-gray-500 text-sm">Population</label>
+                    <p className="text-gray-700 text-xs ">{formatPopulation(country.population)}</p>
                 </div>
                 <div className="flex flex-col">
-                    <label className="font-light">Capital</label>
-                    <p>{country.capital}</p>
+                    <label className="font-light text-gray-500 text-sm">Capital</label>
+                    <p className="text-gray-700 text-xs">{country.capital}</p>
                 </div>
             </div>
         </div>
