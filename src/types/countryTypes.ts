@@ -73,6 +73,7 @@ export type BorderCountry = {
     };
 };
 
+//border countries prop
 export type BorderCountriesProps = {
     borderCountries : BorderCountry[];
 }
