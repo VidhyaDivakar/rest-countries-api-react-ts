@@ -7,6 +7,12 @@ import { useParams } from "react-router-dom";
 // Weather service functions
 import { getWeatherByCity } from "../services/weatherService";
 
+// Flight service functions
+
+import { getFlightsByAirport } from "../services/flightService";
+import { capitalAirportMap } from "../data/capitalAirportMap";
+import type { Flight } from "../types/flightTypes";
+
 export function CountryDetailsPage() {
 
     const { name } = useParams<{ name: string }>();
@@ -16,6 +22,9 @@ export function CountryDetailsPage() {
     const [weather, setWeather] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [weatherLoading, setWeatherLoading] = useState(false);
+
+    const [flights, setFlights] = useState<Flight[]>([]);
+    const [flightLoading, setFlightLoading] = useState(false);
 
     useEffect(() => {
         async function loadCountryDetails() {
@@ -42,7 +51,7 @@ export function CountryDetailsPage() {
         loadCountryDetails();
     }, [name])
 
-    // Load weather (your feature)
+    // Loading weather details from API
     useEffect(() => {
         async function loadWeather() {
             try {
@@ -62,9 +71,49 @@ export function CountryDetailsPage() {
         loadWeather();
     }, [country]);
 
-    // -------------------------
+    // Loading flight details from the API
+    useEffect(() => {
+        async function loadFlights() {
+            try {
+                if (!country?.capital?.[0]) return;
+
+                const capital = country.capital[0];
+                console.log("Capital:", capital);
+
+                const airportCode = capitalAirportMap[capital];
+                console.log("Airport Code:", airportCode);
+
+                if (!airportCode) {
+                    console.log("No airport mapping found");
+                    return;
+                }
+
+                setFlightLoading(true);
+
+                const result = await getFlightsByAirport(airportCode);
+
+                console.log("Flight Result:", result);
+                console.log("Capital:", capital);
+                console.log("Airport Code:", airportCode);
+
+                if (result.data) {
+                    setFlights(result.data.slice(0, 3));
+                } else {
+                    setFlights([]);
+                }
+
+            } catch (err) {
+                console.error("Flight error:", err);
+            } finally {
+                setFlightLoading(false);
+            }
+        }
+
+        loadFlights();
+    }, [country]);
+
     // Loading state
-    // -------------------------
+    //
     if (loading) return <p>Loading Country details ...</p>;
     if (!country) return <p>No country found</p>;
 
@@ -195,18 +244,89 @@ export function CountryDetailsPage() {
                                 )}
                             </div>
                         </div>
-                        {/* Flight Card Dummy*/}
-                        {/* FLIGHT DETAILS CARD */}
-                        <div className="mt-6 rounded-xl bg-white p-6 shadow-sm border border-gray-200">
-                            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                                Flight Details
+                        {/* FLIGHT DETAILS */}
+                        <div className="mt-6 rounded-2xl bg-gradient-to-br from-white to-gray-50 p-6 shadow-md border border-gray-200">
+                            <h2 className="mb-5 text-2xl font-bold text-gray-800 flex items-center gap-2">
+                                ✈️ Flight Details
                             </h2>
 
-                            <div className="space-y-3">
-                                <div className="h-4 w-40 rounded bg-gray-200"></div>
-                                <div className="h-4 w-64 rounded bg-gray-200"></div>
-                                <div className="h-4 w-52 rounded bg-gray-200"></div>
-                                <div className="h-20 rounded bg-gray-100"></div>
+                            {flightLoading && (
+                                <p className="text-gray-500">Loading flights...</p>
+                            )}
+
+                            {!flightLoading && flights.length === 0 && (
+                                <p className="text-gray-500">No flight data available</p>
+                            )}
+
+                            <div className="space-y-5">
+                                {flights.map((flight, index) => (
+                                    <div
+                                        key={index}
+                                        className="group rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1"
+                                    >
+                                        {/* Top Row */}
+                                        <div className="flex items-start justify-between">
+                                            <div>
+                                                <p className="text-lg font-semibold text-gray-900">
+                                                    {flight.airline.name}
+                                                </p>
+
+                                                <p className="text-sm text-gray-500">
+                                                    Flight{" "}
+                                                    <span className="font-medium text-gray-700">
+                                                        {flight.flight.iata}
+                                                    </span>
+                                                </p>
+                                            </div>
+
+                                            {/* Status Badge */}
+                                            <span
+                                                className={`text-xs font-semibold px-3 py-1 rounded-full ${flight.flight_status === "active"
+                                                        ? "bg-green-100 text-green-700"
+                                                        : flight.flight_status === "landed"
+                                                            ? "bg-blue-100 text-blue-700"
+                                                            : flight.flight_status === "cancelled"
+                                                                ? "bg-red-100 text-red-700"
+                                                                : "bg-yellow-100 text-yellow-700"
+                                                    }`}
+                                            >
+                                                {flight.flight_status.toUpperCase()}
+                                            </span>
+                                        </div>
+
+                                        {/* Route Section */}
+                                        <div className="mt-5 flex items-center justify-between text-sm">
+                                            {/* Departure */}
+                                            <div className="w-5/12">
+                                                <p className="text-gray-400 text-xs uppercase tracking-wide">
+                                                    Departure
+                                                </p>
+                                                <p className="font-medium text-gray-800 mt-1">
+                                                    {flight.departure.airport}
+                                                </p>
+                                            </div>
+
+                                            {/* Plane Icon / Line */}
+                                            <div className="flex-1 flex items-center justify-center">
+                                                <div className="w-full h-px bg-gray-300 relative">
+                                                    <span className="absolute left-1/2 -translate-x-1/2 -top-2 text-lg">
+                                                        ✈️
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            {/* Arrival */}
+                                            <div className="w-5/12 text-right">
+                                                <p className="text-gray-400 text-xs uppercase tracking-wide">
+                                                    Arrival
+                                                </p>
+                                                <p className="font-medium text-gray-800 mt-1">
+                                                    {flight.arrival.airport}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
