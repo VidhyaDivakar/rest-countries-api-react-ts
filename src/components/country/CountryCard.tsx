@@ -9,7 +9,7 @@ function formatPopulation(n: number): string {
 
 function CountryCard(country: Country) {
 
-    return (<section className="w-55 md:72 lg:80 rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow" >
+    return (<section className="rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow max-w-sm mx-auto" >
 
         <Link to={`/country/${country.name}`}>
             <div className="w-full aspect-[3/2] overflow-hidden bg-gray-50">
@@ -29,7 +29,7 @@ function CountryCard(country: Country) {
                 </div>
                 <div className="flex flex-col">
                     <label className="font-light text-gray-500 text-sm">Capital</label>
-                    <p className="text-gray-700 text-xs">{country.capital}</p>
+                    <p className="text-gray-700 text-sm">{country.capital}</p>
                 </div>
             </div>
         </div>

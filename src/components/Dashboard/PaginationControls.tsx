@@ -19,7 +19,9 @@ function PaginationControls({pagination, totalItems}:PaginationControlInput) {
                 <div className="flex gap-1 whitespace-nowrap flex-none max-w-[250px] sm:mx-w-[350px] md:max-w-[450px]">
                     {Array.from({ length: pagination.totalPages }, (_, i) => (
                         <button
-                            className="px-3 py-1.5 rounded-full text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                            className={`px-3 py-1.5 rounded-full text-sm text-gray-700 
+                            hover:bg-gray-100 cursor-pointer transition-colors 
+                            ${pagination.currentPage ===i+1 ? "bg-gray-500 text-white" : "" }`}
                             key={i + 1}
                             value={i + 1}
                             type="button"

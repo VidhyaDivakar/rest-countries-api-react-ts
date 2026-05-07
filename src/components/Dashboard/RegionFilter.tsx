@@ -1,13 +1,12 @@
 import {useState} from 'react';
 
-function RegionFilter({handleSearchFilter}){
+function RegionFilter({handleSearchFilter ,favRegion}){
 
     const regions = ["All", "Americas", "Asia", "Europe", "Oceania"];
     
-    const [selected, setSelected] = useState("All");
+    const [selected, setSelected] = useState(favRegion);
 
     const handleFilter=(e)=>{
-        console.log(e.target.value)
         setSelected(e.target.value)
         handleSearchFilter(e.target.value);
     }
@@ -20,7 +19,7 @@ function RegionFilter({handleSearchFilter}){
                     <button
                         className={`rounded-md px-3 py-2 text-sm cursor-pointer transition-colors
                             ${selected === region
-                                ? "bg-gray-800 text-white"
+                                ? "bg-gray-500 text-white"
                                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                             }`}
                         key={region}

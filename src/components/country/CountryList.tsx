@@ -10,7 +10,7 @@ function CountryList({filteredList}){
     
     const pagination:Pagination = usePagination({ 
         totalItems: filteredList.length, 
-        itemsPerPage: 12, 
+        itemsPerPage: 10, 
         initialPage:1 
     });
 
@@ -18,7 +18,7 @@ function CountryList({filteredList}){
     const pageItems:Country[]= filteredList.slice(pagination.startIndex, pagination.endIndex);
 
     return (<div className="pt-5">
-        <div className="grid grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
     {pageItems.map((country)=><CountryCard key={country.name} {...country}/>
     )}</div>
     <PaginationControls pagination={pagination} totalItems={filteredList.length}/> 
