@@ -16,8 +16,8 @@ export default function HeroSection() {
             One Country at a Time.
           </h1>
           <p className="text-base leading-relaxed text-gray-700 max-w-md mx-auto">
-            Explore comprehensive data on over 250 nations, from population and
-            geography to cultural details.
+            Get to know all 250 nations — their people, places, and the little
+            things that make each one home.
           </p>
         </div>
       </div>
