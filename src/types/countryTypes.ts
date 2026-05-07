@@ -71,9 +71,14 @@ export type BorderCountry = {
     name: {
         common: string
     };
+    flags: {
+        png: string;
+        svg: string;
+        alt?: string;
+    };
 };
 
 //border countries prop
 export type BorderCountriesProps = {
-    borderCountries : BorderCountry[];
+    borderCountries: BorderCountry[];
 }

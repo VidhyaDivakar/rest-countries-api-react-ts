@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchCountryDetails, fetchBorderCountries } from "../services/restCountriesApiService";
 import type { BorderCountry, CountryDetailsApiData } from "../types/countryTypes";
 import { BorderCountries } from "../components/BorderCountries";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // Weather service functions
 import { getWeatherByCity } from "../services/weatherService";
@@ -86,50 +86,92 @@ export function CountryDetailsPage() {
 
 
     return (
-        <main className="min-h-screen bg-gray-50 px-6 py-10">
-            <section className="mx-auto max-w-6xl">
-                <div className="grid gap-10 lg:grid-cols-2">
+        <main className="min-h-screen bg-gray-50 px-6 py-8">
+            <section className="mx-auto w-full max-w-7xl px-6">
+                <Link
+                    to="/dashboard"
+                    className="mb-8 inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 shadow-sm transition hover:-translate-y-0.5 hover:bg-blue-50 hover:text-blue-700 hover:shadow-md"
+                >
+                    ← Back to All Countries
+                </Link>
+
+                <div className="grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+                    {/* LEFT SIDE */}
                     <div>
                         <img
                             src={country.flags.png}
-                            alt={country.name.common}
-                            className="w-full max-w-md rounded-xl shadow-md"
+                            alt={`${country.name.common} flag`}
+                            className="h-64 w-full max-w-xl rounded-2xl border border-gray-200 object-cover shadow-lg"
                         />
-                    </div>
 
-                    <div>
-                        <h2 className="text-3xl font-bold text-gray-900">
-                            {country.name.common}
-                        </h2>
+                        <div className="mt-6">
+                            <h2 className="text-3xl font-bold text-gray-900">
+                                {country.name.common}
+                            </h2>
 
-                        <p className="mt-2 text-gray-600">{nativeName}</p>
+                            <p className="mt-2 text-gray-600">{nativeName}</p>
+                        </div>
 
                         <div className="mt-6 grid gap-6 md:grid-cols-2">
-                            <div className="rounded-xl bg-white p-6 shadow-sm">
-                                <h3 className="mb-4 text-xl font-semibold">Key Facts</h3>
-                                <p>Population: {country.population.toLocaleString()}</p>
-                                <p>Region: {country.region}</p>
-                                <p>Capital: {country.capital?.[0] || "N/A"}</p>
-                                <p>Top Level Domain: {country.tld?.[0] || "N/A"}</p>
+                            <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+                                <h3 className="mb-3 text-base font-semibold">Key Facts</h3>
+
+                                <div className="space-y-3 text-sm text-gray-700">
+                                    <p className="flex items-center gap-2">
+                                        <span>👥</span>
+                                        <span>Population: {country.population.toLocaleString()}</span>
+                                    </p>
+
+                                    <p className="flex items-center gap-2">
+                                        <span>🌎</span>
+                                        <span>Region: {country.region}</span>
+                                    </p>
+
+                                    <p className="flex items-center gap-2">
+                                        <span>🏛️</span>
+                                        <span>Capital: {country.capital?.[0] || "N/A"}</span>
+                                    </p>
+
+                                    <p className="flex items-center gap-2">
+                                        <span>🔗</span>
+                                        <span>Top Level Domain: {country.tld?.[0] || "N/A"}</span>
+                                    </p>
+                                </div>
                             </div>
 
-                            <div className="rounded-xl bg-white p-6 shadow-sm">
-                                <h3 className="mb-4 text-xl font-semibold">More Details</h3>
-                                <p>Subregion: {country.subregion}</p>
-                                <p>Languages: {languages}</p>
-                                <p>Currencies: {currencies}</p>
+                            <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+                                <h3 className="mb-3 text-base font-semibold">More Details</h3>
+
+                                <div className="space-y-3 text-sm text-gray-700">
+                                    <p className="flex items-center gap-2">
+                                        <span>📍</span>
+                                        <span>Subregion: {country.subregion || "N/A"}</span>
+                                    </p>
+
+                                    <p className="flex items-center gap-2">
+                                        <span>🗣️</span>
+                                        <span>Languages: {languages}</span>
+                                    </p>
+
+                                    <p className="flex items-center gap-2">
+                                        <span>💰</span>
+                                        <span>Currencies: {currencies}</span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="mt-6 rounded-xl bg-white p-6 shadow-sm">
-                            <h3 className="mb-4 text-xl font-semibold">Border Countries</h3>
+                        <div className="mt-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+                            <h3 className="mb-3 text-lg font-semibold">Border Countries</h3>
                             <BorderCountries borderCountries={borderCountries} />
                         </div>
-                        {/* WEATHER API UI */}
-                        <div className="mt-6 overflow-hidden rounded-3xl bg-gradient-to-br from-sky-500 via-blue-500 to-blue-700 p-6 text-white shadow-xl">
-                            <div className="flex items-start justify-between gap-4">
+                    </div>
 
-                                {/* LEFT SECTION */}
+                    {/* RIGHT SIDE */}
+                    <div>
+                        {/* WEATHER API UI */}
+                        <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-sky-500 via-blue-500 to-blue-700 p-6 text-white shadow-xl">
+                            <div className="flex items-start justify-between gap-4">
                                 <div>
                                     <h3 className="text-2xl font-bold">
                                         {country.capital?.[0]}
@@ -144,32 +186,24 @@ export function CountryDetailsPage() {
                                             <div className="mt-6 space-y-3 text-sm">
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-lg">💧</span>
-                                                    <span>
-                                                        Humidity: {weather.main.humidity}%
-                                                    </span>
+                                                    <span>Humidity: {weather.main.humidity}%</span>
                                                 </div>
 
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-lg">💨</span>
-                                                    <span>
-                                                        Wind: {weather.wind.speed} m/s
-                                                    </span>
+                                                    <span>Wind: {weather.wind.speed} m/s</span>
                                                 </div>
 
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-lg">🌡</span>
-                                                    <span>
-                                                        Feels like {weather.main.temp}°C
-                                                    </span>
+                                                    <span>Feels like {weather.main.temp}°C</span>
                                                 </div>
                                             </div>
                                         </>
                                     )}
 
                                     {weatherLoading && (
-                                        <p className="mt-4 text-blue-100">
-                                            Loading weather...
-                                        </p>
+                                        <p className="mt-4 text-blue-100">Loading weather...</p>
                                     )}
 
                                     {!weatherLoading && !weather && (
@@ -179,7 +213,6 @@ export function CountryDetailsPage() {
                                     )}
                                 </div>
 
-                                {/* RIGHT SECTION */}
                                 {!weatherLoading && weather && (
                                     <div className="flex flex-col items-center">
                                         <img
@@ -195,10 +228,10 @@ export function CountryDetailsPage() {
                                 )}
                             </div>
                         </div>
-                        {/* Flight Card Dummy*/}
+
                         {/* FLIGHT DETAILS CARD */}
-                        <div className="mt-6 rounded-xl bg-white p-6 shadow-sm border border-gray-200">
-                            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                        <div className="mt-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                            <h2 className="mb-4 text-xl font-semibold text-gray-800">
                                 Flight Details
                             </h2>
 
@@ -209,12 +242,9 @@ export function CountryDetailsPage() {
                                 <div className="h-20 rounded bg-gray-100"></div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </section>
         </main>
     );
-
 }
