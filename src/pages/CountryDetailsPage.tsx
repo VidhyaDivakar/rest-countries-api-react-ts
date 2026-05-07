@@ -4,30 +4,71 @@ import type { BorderCountry, CountryDetailsApiData } from "../types/countryTypes
 import { BorderCountries } from "../components/BorderCountries";
 import { useParams } from "react-router-dom";
 
+// Weather service functions
+import { getWeatherByCity } from "../services/weatherService";
+
 export function CountryDetailsPage() {
 
     const { name } = useParams<{ name: string }>();
 
     const [country, setCountry] = useState<CountryDetailsApiData | null>(null);
     const [borderCountries, setBorderCountries] = useState<BorderCountry[]>([]);
+    const [weather, setWeather] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [weatherLoading, setWeatherLoading] = useState(false);
 
     useEffect(() => {
         async function loadCountryDetails() {
-            if (!name) return;
-            const response = await fetchCountryDetails(name);
-            const countryData = response[0];
-            setCountry(countryData);
-            if (countryData.borders && countryData.borders.length > 0) {
-                const borders = await fetchBorderCountries(countryData.borders);
-                setBorderCountries(borders)
-            } else {
-                setBorderCountries([]);
-            }
+            try {
+                if (!name) return;
 
+                setLoading(true);
+
+                const response = await fetchCountryDetails(name);
+                const countryData = response[0];
+                setCountry(countryData);
+                if (countryData.borders && countryData.borders.length > 0) {
+                    const borders = await fetchBorderCountries(countryData.borders);
+                    setBorderCountries(borders)
+                } else {
+                    setBorderCountries([]);
+                }
+            } catch (err) {
+                console.error("Country fetch error:", err);
+            } finally {
+                setLoading(false);
+            }
         }
         loadCountryDetails();
     }, [name])
-    if (!country) return <p>Loading Country details ...</p>
+
+    // Load weather (your feature)
+    useEffect(() => {
+        async function loadWeather() {
+            try {
+                if (!country?.capital?.[0]) return;
+
+                setWeatherLoading(true);
+
+                const result = await getWeatherByCity(country.capital[0]);
+                setWeather(result.weather);
+            } catch (err) {
+                console.error("Weather error:", err);
+            } finally {
+                setWeatherLoading(false);
+            }
+        }
+
+        loadWeather();
+    }, [country]);
+
+    // -------------------------
+    // Loading state
+    // -------------------------
+    if (loading) return <p>Loading Country details ...</p>;
+    if (!country) return <p>No country found</p>;
+
+    //  if (!country) return <p>Loading Country details ...</p>
 
     const nativeName = country.name.nativeName
         ? Object.values(country.name.nativeName)[0].common
@@ -84,6 +125,30 @@ export function CountryDetailsPage() {
                             <h3 className="mb-4 text-xl font-semibold">Border Countries</h3>
                             <BorderCountries borderCountries={borderCountries} />
                         </div>
+                        {/* WEATHER (YOUR FEATURE ADDED) */}
+                        <div className="mt-6 rounded-xl bg-white p-6 shadow-sm">
+                            <h3 className="mb-4 text-xl font-semibold">
+                                Weather in {country.capital?.[0]}
+                            </h3>
+
+                            {weatherLoading && <p>Loading weather...</p>}
+
+                            {!weatherLoading && weather && (
+                                <div className="space-y-1">
+                                    <p>🌡 Temperature: {weather.main.temp}°C</p>
+                                    <p>
+                                        🌥 Condition: {weather.weather[0].description}
+                                    </p>
+                                    <p>💨 Wind: {weather.wind.speed} m/s</p>
+                                    <p>💧 Humidity: {weather.main.humidity}%</p>
+                                </div>
+                            )}
+
+                            {!weatherLoading && !weather && (
+                                <p>No weather data available</p>
+                            )}
+                        </div>
+
                     </div>
                 </div>
             </section>
