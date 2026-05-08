@@ -14,7 +14,7 @@ function CountryList({ filteredList }: CountryListProps) {
     
     const pagination:Pagination = usePagination({ 
         totalItems: filteredList.length, 
-        itemsPerPage: 8, 
+        itemsPerPage: 10, 
         initialPage:1 
     });
 
