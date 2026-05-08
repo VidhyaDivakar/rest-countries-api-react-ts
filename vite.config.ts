@@ -10,4 +10,5 @@ export default defineConfig({
     tailwindcss(),
     babel({ presets: [reactCompilerPreset()] }),
   ],
+  base: "/rest-countries-api-react-ts/", 
 });
