@@ -1,11 +1,6 @@
 import type { Country } from "../../types/countryTypes";
 import { Link } from 'react-router-dom'
-
-function formatPopulation(n: number): string {
-    if (n >= 1000000) return (n / 1000000).toFixed(1) + "M";
-    if (n >= 1000) return (n / 1000).toFixed(1) + "K";
-    return String(n);
-}
+import { formatPopulation } from "../utility/utility";
 
 function CountryCard(country: Country) {
 
@@ -17,6 +12,7 @@ function CountryCard(country: Country) {
             </div>
         </Link>
     
+
         <div className="m-4">
             <div className="flex justify-between">
                 <h2 className="font-semibold text-gray-800">{country.name}</h2>
@@ -25,11 +21,11 @@ function CountryCard(country: Country) {
             <div className="flex justify-between pt-4">
                 <div className="flex flex-col">
                     <label className="font-light text-gray-500 text-sm">Population</label>
-                    <p className="text-gray-700 text-xs ">{formatPopulation(country.population)}</p>
+                    <p className="text-gray-700 text-xs ">👥 {formatPopulation(country.population)}</p>
                 </div>
                 <div className="flex flex-col">
                     <label className="font-light text-gray-500 text-sm">Capital</label>
-                    <p className="text-gray-700 text-sm">{country.capital}</p>
+                    <p className="text-gray-700 text-sm"> 🏛️ {country.capital}</p>
                 </div>
             </div>
         </div>
