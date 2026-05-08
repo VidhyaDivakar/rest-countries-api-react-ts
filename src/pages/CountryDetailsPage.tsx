@@ -284,11 +284,11 @@ export function CountryDetailsPage() {
                         </div>
 
                         {/* FLIGHT DETAILS CARD */}
-                        <div className="mt-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                        {/*</div> <div className="mt-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                             <h2 className="mb-4 text-xl font-semibold text-gray-800">
                                 Flight Details
-                            </h2>
-
+                            </h2>*/}
+                        <div>
                             {/* HEADER */}
                             <div className="flex items-center justify-between border-b border-gray-100 px-6 py-5">
                                 <div>
