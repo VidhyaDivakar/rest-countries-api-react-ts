@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route, BrowserRouter  } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Welcome from "./pages/Welcome";
 import Nav from "./components/common/Nav";
 import Dashboard from "./pages/Dashboard";
@@ -13,7 +13,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/country/:name" element={<CountryDetailsPage />}> </Route>
       </Routes>
-      </BrowserRouter>
+    </BrowserRouter>
   );
 }
 

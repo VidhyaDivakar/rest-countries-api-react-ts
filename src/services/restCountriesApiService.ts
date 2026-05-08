@@ -64,7 +64,7 @@ export async function fetchCountryDetails(name: string) {
 export async function fetchBorderCountries(codes: string[]) {
     try {
         const response = await fetch(
-            `https://restcountries.com/v3.1/alpha?codes=${codes.join(",")}&fields=name,cca3`
+            `https://restcountries.com/v3.1/alpha?codes=${codes.join(",")}&fields=name,cca3,flags`
         );
 
         // Check if the API request was successful
