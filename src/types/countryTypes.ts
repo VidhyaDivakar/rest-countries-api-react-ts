@@ -49,6 +49,9 @@ export interface CountryDetailsApiData {
         [key: string]: string;
     };
     borders?: string[];
+    capitalInfo?: {
+        latlng?: [number, number];
+    };
 }
 
 //simplified country data used in the application UI
@@ -75,5 +78,5 @@ export type BorderCountry = {
 
 //border countries prop
 export type BorderCountriesProps = {
-    borderCountries : BorderCountry[];
+    borderCountries: BorderCountry[];
 }

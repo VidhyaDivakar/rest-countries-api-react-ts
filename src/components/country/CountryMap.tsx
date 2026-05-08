@@ -31,7 +31,11 @@ export function CountryMap({ capital, coords, country }: Props) {
                     url={
                         satellite
                             ? "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-                            : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png light mode"
+                            /*
+                        https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png*/
+                            /*https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}*/
+
                     }
                 />
 
