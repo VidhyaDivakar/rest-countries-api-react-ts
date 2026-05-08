@@ -15,19 +15,24 @@ function usePagination({ totalItems, itemsPerPage, initialPage }: PaginationInpu
 
     useEffect(() => {
         const newTotalPages = Math.ceil(totalItems / itemsPerPage);
-        setCurrentPage(prev => Math.max(1, Math.min(prev, newTotalPages)));
-    }, [itemsPerPage, totalItems]);
+        setCurrentPage(prev =>{ 
+            console.log(Math.max(1, Math.min(prev, newTotalPages)));
+            return Math.max(1, Math.min(prev, newTotalPages))});
+    }, [totalItems]);
 
     const canNextPage = currentPage < totalPages;
     const canPrevPage = currentPage > 1;
 
     const nextPage = ()=>{
         console.log("inside use pagination hook next page");
+        console.log(currentPage);
         setCurrentPage(prevPage => prevPage + 1)
     };
 
     const prevPage = ()=>{
-        setCurrentPage(prevPage => prevPage - 1)
+        //setCurrentPage(prevPage => prevPage - 1)
+          if (!canNextPage) return;
+    setCurrentPage(prev => Math.min(prev + 1, totalPages));
     };
 
     const setPage = (pageNumber: number) => {

@@ -12,9 +12,17 @@ export function BorderCountries({ borderCountries }: BorderCountriesProps) {
                 <Link
                     to={`/country/${border.name.common}`}
                     key={border.cca3}
-                    className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm shadow-sm hover:bg-gray-100"
+                    className="flex items-center gap-2 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 hover:shadow-md"
                 >
-                    {border.name.common}
+                    {border.flags?.png && (
+                        <img
+                            src={border.flags.png}
+                            alt={`${border.name.common} flag`}
+                            className="h-4 w-6 rounded-sm object-cover"
+                        />
+                    )}
+
+                    <span>{border.name.common}</span>
                 </Link>
             ))}
         </div>
