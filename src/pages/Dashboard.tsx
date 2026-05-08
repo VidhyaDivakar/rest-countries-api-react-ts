@@ -8,16 +8,16 @@ function Dashboard (){
     //use custom hook to get the countryList
     const {countryList} = useCountry();
     
-    const[favRegion] = useState(()=>{
-         const loggedInUser = localStorage.getItem("user");
-      const userDetails = loggedInUser? JSON.parse(loggedInUser) : undefined; 
+    const [favRegion] = useState<string>(() => {
+        const loggedInUser = localStorage.getItem("user");
+        const userDetails = loggedInUser ? JSON.parse(loggedInUser) : undefined;
         console.log(userDetails);
-        const featuredRegion = userDetails? userDetails["region"] : "All";
-       return featuredRegion;
+        const featuredRegion = userDetails ? userDetails["region"] : "All";
+        return featuredRegion;
     });
-      
-    const [search, setSearch] = useState("");
-    const [filter, setFilter] = useState(favRegion);
+
+    const [search, setSearch] = useState<string>("");
+    const [filter, setFilter] = useState<string>(favRegion);
    
     const searchCountry= (searchValue:string)=>{
        setSearch(searchValue);   

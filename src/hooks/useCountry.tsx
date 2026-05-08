@@ -3,7 +3,7 @@ import { fetchAllCountries } from "../services/restCountriesApiService";
 import type { Country, CountryDetailsApiData } from "../types/countryTypes";
 import countryMapper from "../components/mapper/countryMapper";
 
-function useCountry(){
+function useCountry(): { countryList: Country[] } {
 
         const [countryList, setCountryList] = useState<Country[]>([]);
         useEffect(()=>{

@@ -1,9 +1,12 @@
 
-function SearchBar({handleSearch}){
+interface SearchBarProps {
+    handleSearch: (value: string) => void;
+}
 
-    
-    const handleChange = (e)=>{
-        handleSearch(e.target.value);
+function SearchBar({ handleSearch }: SearchBarProps) {
+
+    const handleChange = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+        handleSearch(e.currentTarget.value);
     }
 
 

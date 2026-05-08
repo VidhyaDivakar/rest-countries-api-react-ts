@@ -1,7 +1,8 @@
 import { DataError, NetworkError } from "../errorHandler/errorHandler";
+import type { BorderCountry, CountryDetailsApiData } from "../types/countryTypes";
 
 //fetch all countries needed for home page
-export async function fetchAllCountries() {
+export async function fetchAllCountries(): Promise<CountryDetailsApiData[]> {
 
     try {
         const response = await fetch(
@@ -12,7 +13,7 @@ export async function fetchAllCountries() {
         if (!response.ok) {
             throw new NetworkError("Failed to fetch countries");
         }
-        const data = await response.json();
+        const data: CountryDetailsApiData[] = await response.json();
 
         // validate that the API returned an Array
         if (!Array.isArray(data)) {
@@ -30,8 +31,8 @@ export async function fetchAllCountries() {
     }
 }
 
-//fetch details for one selected Country 
-export async function fetchCountryDetails(name: string) {
+//fetch details for one selected Country
+export async function fetchCountryDetails(name: string): Promise<CountryDetailsApiData[]> {
     try {
         const response = await fetch(
             `https://restcountries.com/v3.1/name/${encodeURIComponent(name)}?fullText=true`
@@ -41,7 +42,7 @@ export async function fetchCountryDetails(name: string) {
         if (!response.ok) {
             throw new NetworkError(`Failed to fetch country ${name}`);
         }
-        const data = await response.json();
+        const data: CountryDetailsApiData[] = await response.json();
 
         // validate that the API returned an array
         if (!Array.isArray(data)) {
@@ -61,7 +62,7 @@ export async function fetchCountryDetails(name: string) {
 }
 
 //Fetch border country details using their country codes
-export async function fetchBorderCountries(codes: string[]) {
+export async function fetchBorderCountries(codes: string[]): Promise<BorderCountry[]> {
     try {
         const response = await fetch(
             `https://restcountries.com/v3.1/alpha?codes=${codes.join(",")}&fields=name,cca3,flags`
@@ -71,7 +72,7 @@ export async function fetchBorderCountries(codes: string[]) {
         if (!response.ok) {
             throw new NetworkError(`Failed to fetch border countries: ${codes.join(",")}`);
         }
-        const data = await response.json();
+        const data: BorderCountry[] = await response.json();
 
         //validate that the API returned an array
         if (!Array.isArray(data)) {

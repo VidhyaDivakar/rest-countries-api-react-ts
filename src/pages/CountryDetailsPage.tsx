@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router-dom";
 
 // Weather service functions
 import { getWeatherByCity } from "../services/weatherService";
+import type { WeatherResponse } from "../types/weatherTypes";
 
 // Flight service functions
 
@@ -22,7 +23,7 @@ export function CountryDetailsPage() {
 
     const [country, setCountry] = useState<CountryDetailsApiData | null>(null);
     const [borderCountries, setBorderCountries] = useState<BorderCountry[]>([]);
-    const [weather, setWeather] = useState<any>(null);
+    const [weather, setWeather] = useState<WeatherResponse | null>(null);
     const [loading, setLoading] = useState(true);
     const [weatherLoading, setWeatherLoading] = useState(false);
 

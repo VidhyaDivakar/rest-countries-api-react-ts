@@ -3,11 +3,16 @@ import type { WeatherResponse } from "../types/weatherTypes";
 const OPENWEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 
 
+interface GeocodingResult {
+    lat: number;
+    lon: number;
+    name: string;
+    country: string;
+}
+
 // 1. Get coordinates from city
-export async function getCoordinates(city: string, country?: string) {
-    const query = country
-        ? `${city},${country}`
-        : city;
+export async function getCoordinates(city: string, country?: string): Promise<GeocodingResult> {
+    const _query = country ? `${city},${country}` : city;
     const res = await fetch(
         `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(
             city
@@ -18,17 +23,17 @@ export async function getCoordinates(city: string, country?: string) {
         throw new Error("Failed to fetch coordinates");
     }
 
-    const data = await res.json();
+    const data: GeocodingResult[] = await res.json();
 
     if (!data || data.length === 0) {
         throw new Error(`No coordinates found for city: ${city}`);
     }
 
     return {
-        lat: data[0].lat as number,
-        lon: data[0].lon as number,
-        name: data[0].name as string,
-        country: data[0].country as string,
+        lat: data[0].lat,
+        lon: data[0].lon,
+        name: data[0].name,
+        country: data[0].country,
     };
 }
 
@@ -53,7 +58,7 @@ export async function fetchWeather(
 
 // 3. Combined helper (clean API for UI)
 
-export async function getWeatherByCity(city: string) {
+export async function getWeatherByCity(city: string): Promise<{ location: { city: string; country: string }; weather: WeatherResponse }> {
     const coords = await getCoordinates(city);
 
     const weather = await fetchWeather(coords.lat, coords.lon);

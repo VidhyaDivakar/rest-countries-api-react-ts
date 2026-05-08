@@ -2,8 +2,8 @@ import type { PaginationControlInput } from "../../types/pagination";
 
 function PaginationControls({pagination, totalItems}:PaginationControlInput) {
 
-    const handlePageChange = (e) => {//Todo: add different event types like: mouse & key
-        pagination.setPage(Number(e.target.value));
+    const handlePageChange = (e: React.MouseEvent<HTMLButtonElement>): void => {
+        pagination.setPage(Number(e.currentTarget.value));
     }
 
     return (

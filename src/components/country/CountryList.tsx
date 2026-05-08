@@ -5,7 +5,11 @@ import PaginationControls from "../Dashboard/PaginationControls";
 import CountryCard from "./CountryCard";
 import type { Country } from "../../types/countryTypes";
 
-function CountryList({filteredList}){
+interface CountryListProps {
+    filteredList: Country[];
+}
+
+function CountryList({ filteredList }: CountryListProps) {
 
     
     const pagination:Pagination = usePagination({ 

@@ -1,14 +1,20 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
-function RegionFilter({handleSearchFilter ,favRegion}){
+interface RegionFilterProps {
+    handleSearchFilter: (region: string) => void;
+    favRegion: string;
+}
+
+function RegionFilter({ handleSearchFilter, favRegion }: RegionFilterProps) {
 
     const regions = ["All", "Americas", "Asia", "Europe", "Oceania"];
-    
-    const [selected, setSelected] = useState(favRegion);
 
-    const handleFilter=(e)=>{
-        setSelected(e.target.value)
-        handleSearchFilter(e.target.value);
+    const [selected, setSelected] = useState<string>(favRegion);
+
+    const handleFilter = (e: React.MouseEvent<HTMLButtonElement>): void => {
+        const value = e.currentTarget.value;
+        setSelected(value);
+        handleSearchFilter(value);
     }
 
     return (
