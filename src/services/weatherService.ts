@@ -11,8 +11,8 @@ interface GeocodingResult {
 }
 
 // 1. Get coordinates from city
-export async function getCoordinates(city: string, country?: string): Promise<GeocodingResult> {
-    const _query = country ? `${city},${country}` : city;
+export async function getCoordinates(city: string): Promise<GeocodingResult> {
+   // const _query = country ? `${city},${country}` : city;
     const res = await fetch(
         `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(
             city
@@ -58,7 +58,7 @@ export async function fetchWeather(
 
 // 3. Combined helper (clean API for UI)
 
-export async function getWeatherByCity(city: string): Promise<{ location: { city: string; country: string }; weather: WeatherResponse }> {
+export async function getWeatherByCity(city: string) {
     const coords = await getCoordinates(city);
 
     const weather = await fetchWeather(coords.lat, coords.lon);

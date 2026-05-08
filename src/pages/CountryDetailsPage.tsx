@@ -10,9 +10,9 @@ import type { WeatherResponse } from "../types/weatherTypes";
 
 // Flight service functions
 
-import { getFlightsByAirport } from "../services/flightService";
-import { capitalAirportMap } from "../data/capitalAirportMap";
-import type { Flight } from "../types/flightTypes";
+// import { getFlightsByAirport } from "../services/flightService";
+// import { capitalAirportMap } from "../data/capitalAirportMap";
+//  import type { Flight } from "../types/flightTypes";
 
 // Leaflet Map function
 import { CountryMap } from "../components/country/CountryMap";
@@ -28,8 +28,8 @@ export function CountryDetailsPage() {
     const [weatherLoading, setWeatherLoading] = useState(false);
 
 
-    const [flights, setFlights] = useState<Flight[]>([]);
-    const [flightLoading, setFlightLoading] = useState(false);
+    //  const [flights, setFlights] = useState<Flight[]>([]);
+    //  const [flightLoading, setFlightLoading] = useState(false);
 
     useEffect(() => {
         async function loadCountryDetails() {
@@ -77,45 +77,45 @@ export function CountryDetailsPage() {
     }, [country]);
 
     // Loading flight details from the API
-    useEffect(() => {
-        async function loadFlights() {
-            try {
-                if (!country?.capital?.[0]) return;
+    // useEffect(() => {
+    //     async function loadFlights() {
+    //         try {
+    //             if (!country?.capital?.[0]) return;
 
-                const capital = country.capital[0];
-                console.log("Capital:", capital);
+    //             const capital = country.capital[0];
+    //             console.log("Capital:", capital);
 
-                const airportCode = capitalAirportMap[capital];
-                console.log("Airport Code:", airportCode);
+    //             const airportCode = capitalAirportMap[capital];
+    //             console.log("Airport Code:", airportCode);
 
-                if (!airportCode) {
-                    console.log("No airport mapping found");
-                    return;
-                }
+    //             if (!airportCode) {
+    //                 console.log("No airport mapping found");
+    //                 return;
+    //             }
 
-                setFlightLoading(true);
+    //             setFlightLoading(true);
 
-                const result = await getFlightsByAirport(airportCode);
+    //             const result = await getFlightsByAirport(airportCode);
 
-                console.log("Flight Result:", result);
-                console.log("Capital:", capital);
-                console.log("Airport Code:", airportCode);
+    //             console.log("Flight Result:", result);
+    //             console.log("Capital:", capital);
+    //             console.log("Airport Code:", airportCode);
 
-                if (result.data) {
-                    setFlights(result.data.slice(0, 3));
-                } else {
-                    setFlights([]);
-                }
+    //             if (result.data) {
+    //                 setFlights(result.data.slice(0, 3));
+    //             } else {
+    //                 setFlights([]);
+    //             }
 
-            } catch (err) {
-                console.error("Flight error:", err);
-            } finally {
-                setFlightLoading(false);
-            }
-        }
+    //         } catch (err) {
+    //             console.error("Flight error:", err);
+    //         } finally {
+    //             setFlightLoading(false);
+    //         }
+    //     }
 
-        loadFlights();
-    }, [country]);
+    //     loadFlights();
+    // }, [country]);
 
     // Loading state
     //
