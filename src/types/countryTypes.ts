@@ -49,6 +49,9 @@ export interface CountryDetailsApiData {
         [key: string]: string;
     };
     borders?: string[];
+    capitalInfo?: {
+        latlng?: [number, number];
+    };
 }
 
 //simplified country data used in the application UI

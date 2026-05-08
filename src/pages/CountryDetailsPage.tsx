@@ -7,6 +7,15 @@ import { Link, useParams } from "react-router-dom";
 // Weather service functions
 import { getWeatherByCity } from "../services/weatherService";
 
+// Flight service functions
+
+import { getFlightsByAirport } from "../services/flightService";
+import { capitalAirportMap } from "../data/capitalAirportMap";
+import type { Flight } from "../types/flightTypes";
+
+// Leaflet Map function
+import { CountryMap } from "../components/country/CountryMap";
+
 export function CountryDetailsPage() {
 
     const { name } = useParams<{ name: string }>();
@@ -16,6 +25,10 @@ export function CountryDetailsPage() {
     const [weather, setWeather] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [weatherLoading, setWeatherLoading] = useState(false);
+
+
+    const [flights, setFlights] = useState<Flight[]>([]);
+    const [flightLoading, setFlightLoading] = useState(false);
 
     useEffect(() => {
         async function loadCountryDetails() {
@@ -42,7 +55,7 @@ export function CountryDetailsPage() {
         loadCountryDetails();
     }, [name])
 
-    // Load weather (your feature)
+    // Loading weather details from API
     useEffect(() => {
         async function loadWeather() {
             try {
@@ -62,12 +75,52 @@ export function CountryDetailsPage() {
         loadWeather();
     }, [country]);
 
-    // -------------------------
+    // Loading flight details from the API
+    useEffect(() => {
+        async function loadFlights() {
+            try {
+                if (!country?.capital?.[0]) return;
+
+                const capital = country.capital[0];
+                console.log("Capital:", capital);
+
+                const airportCode = capitalAirportMap[capital];
+                console.log("Airport Code:", airportCode);
+
+                if (!airportCode) {
+                    console.log("No airport mapping found");
+                    return;
+                }
+
+                setFlightLoading(true);
+
+                const result = await getFlightsByAirport(airportCode);
+
+                console.log("Flight Result:", result);
+                console.log("Capital:", capital);
+                console.log("Airport Code:", airportCode);
+
+                if (result.data) {
+                    setFlights(result.data.slice(0, 3));
+                } else {
+                    setFlights([]);
+                }
+
+            } catch (err) {
+                console.error("Flight error:", err);
+            } finally {
+                setFlightLoading(false);
+            }
+        }
+
+        loadFlights();
+    }, [country]);
+
     // Loading state
-    // -------------------------
+    //
     if (loading) return <p>Loading Country details ...</p>;
     if (!country) return <p>No country found</p>;
-
+    const coords = country.capitalInfo?.latlng;
     //  if (!country) return <p>Loading Country details ...</p>
 
     const nativeName = country.name.nativeName
@@ -83,6 +136,7 @@ export function CountryDetailsPage() {
             .map((currency) => currency.name)
             .join(", ")
         : "N/A"
+
 
 
     return (
@@ -230,16 +284,53 @@ export function CountryDetailsPage() {
                         </div>
 
                         {/* FLIGHT DETAILS CARD */}
-                        <div className="mt-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                        {/*</div> <div className="mt-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                             <h2 className="mb-4 text-xl font-semibold text-gray-800">
                                 Flight Details
-                            </h2>
+                            </h2>*/}
+                        <div>
+                            {/* HEADER */}
+                            <div className="flex items-center justify-between border-b border-gray-100 px-6 py-5">
+                                <div>
+                                    <h3 className="text-2xl font-bold tracking-tight text-gray-900">
+                                        Location Map
+                                    </h3>
 
-                            <div className="space-y-3">
-                                <div className="h-4 w-40 rounded bg-gray-200"></div>
-                                <div className="h-4 w-64 rounded bg-gray-200"></div>
-                                <div className="h-4 w-52 rounded bg-gray-200"></div>
-                                <div className="h-20 rounded bg-gray-100"></div>
+                                    <p className="mt-1 text-sm text-gray-500">
+                                        Explore the capital city location
+                                    </p>
+                                </div>
+
+                                {/* Small floating badge */}
+                                <div className="rounded-full bg-blue-50 px-4 py-2 text-sm font-medium text-blue-600 shadow-sm">
+                                    📍 {country.capital?.[0] ?? "Unknown"}
+                                </div>
+                                {/* Google Maps Link */}
+                                {coords && (
+                                    <a
+                                        href={`https://www.google.com/maps?q=${coords[0]},${coords[1]}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-black"
+                                    >
+                                        Open Map
+                                    </a>
+                                )}
+                            </div>
+
+                            {/* MAP SECTION */}
+                            <div className="relative p-4">
+
+                                {/* subtle gradient glow */}
+                                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-100/20 via-transparent to-sky-100/20" />
+
+                                {coords && coords.length === 2 && (
+                                    <CountryMap
+                                        coords={[coords[0], coords[1]]}
+                                        capital={country.capital?.[0] ?? "Unknown"}
+                                        country={country.name.common}
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>
